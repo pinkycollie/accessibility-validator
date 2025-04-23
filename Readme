@@ -1,0 +1,115 @@
+Let’s customize that README to match your vision for Pinksync — a FastAPI + Next.js 14 hybrid designed for Deaf-first APIs, VR4Deaf, job and business flows, and your future PinkSync AI system.
+
+⸻
+
+README.md – Pinksync Starter Kit
+
+# Pinksync Starter
+
+**Deaf-first. AI-powered. Future-ready.**
+
+This is a hybrid **Next.js 14 + FastAPI** starter built for real-time vocational, entrepreneurial, and rehabilitation workflows. Created by [Pinky Collie](https://mbtquniverse.com), this stack is built to support:
+
+- Deaf-first API integration
+- Vocational Rehabilitation (VR4Deaf)
+- Job & Business development pipelines
+- AI automation with scalable backend support
+
+---
+
+## How It Works
+
+- **Frontend:** Next.js 14 (App Router)
+- **Backend:** FastAPI (served under `/api/py`)
+- **Vercel Production:** FastAPI runs as Python serverless functions alongside your React app.
+- **Local Development:** FastAPI runs on `127.0.0.1:8000`, proxied via `next.config.js` rewrites.
+
+---
+
+## Folder Structure
+
+/
+├── app/                  # Next.js App Router
+├── api/                  # FastAPI backend (Python)
+│   ├── deaf.py           # Deaf-first endpoints
+│   ├── job.py            # Job readiness APIs
+│   ├── business.py       # Business startup APIs
+│   ├── vr4deaf.py        # Vocational Rehab for Deaf
+├── models/               # Pydantic schemas
+├── services/             # Business logic modules
+├── auth/                 # Authentication + token mgmt
+├── utils/                # Helper functions/utilities
+├── database/             # Database connection + queries
+├── routers/              # FastAPI route includes
+├── public/               # Static assets (Next.js)
+├── main.py               # FastAPI entry point
+├── next.config.js        # Rewrite rules for dev/prod
+├── requirements.txt      # Python dependencies
+├── package.json          # Node.js dependencies
+
+---
+
+## Getting Started
+
+Clone and run locally:
+
+```bash
+npx create-next-app pinksync --example "https://github.com/digitros/nextjs-fastapi"
+cd pinksync
+
+# Set up Python backend
+python3 -m venv venv
+source venv/bin/activate
+
+# Install frontend and backend dependencies
+npm install
+pip install -r requirements.txt
+
+# Run dev servers
+npm run dev
+
+	•	Open http://localhost:3000 for your app.
+	•	FastAPI runs on http://127.0.0.1:8000.
+
+⸻
+
+Deployment on Vercel
+
+Just connect your repo and Vercel will auto-detect the Next.js frontend and Python API functions in /api. No extra configuration needed.
+
+⸻
+
+Why Pinksync?
+
+This isn’t just a boilerplate. It’s a movement:
+	•	Empower the Deaf community
+	•	Automate with intention
+	•	Streamline vocational and business development
+	•	Build inclusive, scalable systems from Day 1
+
+⸻
+
+Roadmap
+	•	Integrate authentication (JWT)
+	•	Deploy PostgreSQL on Neon.tech
+	•	Add ASL recognition endpoint
+	•	Sync with PinkSync AI agent
+	•	Real-time Notion + Anytype integration
+
+⸻
+
+Learn More
+	•	Next.js Documentation
+	•	FastAPI Docs
+	•	Vercel
+	•	Pinky Collie
+
+⸻
+
+License
+
+MIT © 2025 Pinky Collie & 360 Magicians
+
+---
+
+Want this README included in your repo automatically? Or pushed to GitHub/Vercel with a starter commit? Just say the word and I’ll package the whole repo setup.
