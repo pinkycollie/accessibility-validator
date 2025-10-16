@@ -11,7 +11,9 @@ def create_project(project_name: str, project_type: str = "rest_api"):
     
     # Convert project name to module name (lowercase, underscores)
     module_name = project_name.lower().replace("-", "_").replace(" ", "_")
-    prefix = f"/api/{project_name.lower().replace('_', '-')}"
+    # Use consistent naming for API prefix (hyphens)
+    api_name = module_name.replace("_", "-")
+    prefix = f"/api/{api_name}"
     
     # Create project file
     project_file = f"""\"\"\"
