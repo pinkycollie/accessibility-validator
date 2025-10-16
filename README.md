@@ -4,6 +4,8 @@
 
 A flexible, scalable backend system designed to handle multiple projects under one unified API. Built with FastAPI and Next.js 14, this hybrid architecture supports REST APIs, SaaS applications, automation workflows, and more - all dynamically managed from a single codebase.
 
+> 📖 **New to this system?** Start with [OVERVIEW.md](OVERVIEW.md) for a visual guide, then follow [QUICKSTART.md](QUICKSTART.md) to get running in 5 minutes!
+
 ## 🎯 What Makes This Hybrid?
 
 This backend is designed to solve the "scattered projects" problem. Instead of managing separate FastAPI apps, Django projects, and automation scripts across different repositories, this system provides:
@@ -281,9 +283,12 @@ gunicorn api.index:app -w 4 -k uvicorn.workers.UvicornWorker
 
 ## 📚 Documentation
 
-- **[Architecture Guide](ARCHITECTURE.md)** - Detailed system architecture
-- **[Setup Guide](SETUP_GUIDE.md)** - Step-by-step setup for different use cases
-- **[API Documentation](http://localhost:8000/api/py/docs)** - Interactive API docs (when running)
+- **[📋 OVERVIEW.md](OVERVIEW.md)** - System overview and visual guide ⭐ Start here!
+- **[⚡ QUICKSTART.md](QUICKSTART.md)** - Get running in 5 minutes
+- **[🏗️ ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed system architecture
+- **[🔧 SETUP_GUIDE.md](SETUP_GUIDE.md)** - Step-by-step setup for different use cases
+- **[💡 EXAMPLES.md](EXAMPLES.md)** - Practical usage examples
+- **[📖 API Documentation](http://localhost:8000/api/py/docs)** - Interactive API docs (when running)
 
 ## 🤝 Contributing
 
