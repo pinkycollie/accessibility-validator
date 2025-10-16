@@ -2,7 +2,7 @@
 
 **Part of the MBTQ Ecosystem - Deaf-First Accessibility Automation**
 
-The Accessibility Validator is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual communication and sign language navigation patterns.
+The Accessibility Validator is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual ui and sign language navigation patterns.
 
 ## 🎯 Purpose in MBTQ Ecosystem
 
