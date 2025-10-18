@@ -70,16 +70,22 @@ async def create_task(task: TaskRequest, background_tasks: BackgroundTasks):
     
     # Execute task in background
     async def execute_task():
-        if task.type == TaskType.AI_GENERATION:
-            result = await google_ai.generate_text(
-                task.parameters.get("prompt", ""),
-                **task.parameters
-            )
+        try:
+            if task.type == TaskType.AI_GENERATION:
+                result = await google_ai.generate_text(
+                    task.parameters.get("prompt", ""),
+                    **task.parameters
+                )
+                await supabase.update("automation_tasks", task_id, {
+                    "status": "completed",
+                    "result": {"generated_text": result}
+                })
+        except Exception as e:
+            print(f"Error executing task {task_id}: {e}")
             await supabase.update("automation_tasks", task_id, {
-                "status": "completed",
-                "result": {"generated_text": result}
+                "status": "failed",
+                "result": {"error": str(e)}
             })
-    
     background_tasks.add_task(execute_task)
     
     return TaskResponse(
