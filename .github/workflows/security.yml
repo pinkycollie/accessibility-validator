@@ -9,10 +9,15 @@ on:
     - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   dependency-security:
     name: Dependency Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
       - name: Checkout code
