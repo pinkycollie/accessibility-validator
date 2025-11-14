@@ -2,6 +2,9 @@
 
 **Part of the MBTQ Ecosystem - Deaf-First Accessibility Automation**
 
+[![CI Status](https://github.com/pinkycollie/accessibility-validator/workflows/CI%20-%20Build%20and%20Test/badge.svg)](https://github.com/pinkycollie/accessibility-validator/actions)
+[![Security](https://github.com/pinkycollie/accessibility-validator/workflows/Security%20Scanning/badge.svg)](https://github.com/pinkycollie/accessibility-validator/security)
+
 The Accessibility Validator is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual ui and sign language navigation patterns.
 
 ## 🎯 Purpose in MBTQ Ecosystem
@@ -12,7 +15,36 @@ The Accessibility Validator is a core service within PinkSync that ensures all i
 - **360Magicians Compatible**: AI agents can trigger validation tasks
 - **DAO Governed**: Validation standards controlled by mbtquniverse.com governance
 
+## ✨ Key Features
+
+- 🤖 **Automated CI/CD Pipeline** - Continuous integration and deployment with GitHub Actions
+- 🔒 **Security Scanning** - Automated vulnerability detection with CodeQL and dependency audits
+- 🔄 **Auto-Fix** - Automatic code formatting and linting fixes
+- 📦 **Dependency Management** - Automated updates via Dependabot
+- 🐳 **Docker Support** - Lightweight containerized deployment
+- 🏢 **Multi-Tenant** - Configurable deployments for different use cases
+- 🧪 **Test Infrastructure** - Automated testing for Python and JavaScript
+
 ## 🚀 Quick Deploy
+
+### Automated Setup (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/pinkycollie/accessibility-validator.git
+cd accessibility-validator
+
+# Run automated setup script
+npm run setup
+# or
+bash scripts/setup-dev.sh
+```
+
+This will:
+- Install all dependencies (Node.js and Python)
+- Create Python virtual environment
+- Generate `.env.local` template
+- Provide next steps
 
 ### One-Click Vercel Deploy
 
@@ -33,12 +65,28 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 npm install
 pip install -r requirements.txt
 
+# Copy environment template
+cp .env.template .env.local
+# Edit .env.local with your configuration
+
 # Run development server
 npm run dev
 ```
 
 Open <http://localhost:3000> to see the validator interface.
 FastAPI server runs on <http://127.0.0.1:8000>
+
+### Docker Deployment
+
+```bash
+# Build and run with Docker Compose
+npm run docker:run
+# or
+docker-compose up -d
+
+# Stop services
+npm run docker:stop
+```
 
 ## 🏗️ Architecture
 
@@ -138,28 +186,65 @@ const aiValidation = await fetch('/api/py/ai-validate', {
 
 ## 🛠️ Development
 
+### Available Scripts
+
+```bash
+# Development
+npm run dev              # Start both Next.js and FastAPI dev servers
+npm run next-dev         # Start only Next.js dev server
+npm run fastapi-dev      # Start only FastAPI dev server
+
+# Building
+npm run build            # Build Next.js production bundle
+npm run build:lightweight # Run lightweight build script
+
+# Testing
+npm run lint             # Run ESLint on JavaScript/TypeScript
+npm run lint:fix         # Run ESLint with auto-fix
+npm run test:api         # Run Python API tests
+
+# Utilities
+npm run setup            # Run automated development setup
+npm run docker:build     # Build Docker image
+npm run docker:run       # Start Docker containers
+npm run docker:stop      # Stop Docker containers
+npm run update-deps      # Update all dependencies
+```
+
 ### Project Structure
 
 ```
 accessibility-validator/
+├── .github/
+│   ├── workflows/          # CI/CD automation workflows
+│   └── dependabot.yml      # Automated dependency updates
 ├── app/                    # Next.js frontend
 │   ├── components/         # UI components
 │   ├── validation/         # Validation dashboard
 │   └── api/               # Next.js API routes
 ├── api/                   # FastAPI backend
+│   ├── tests/             # API test suite
 │   ├── validators/        # Core validation logic
 │   ├── deaf_first/       # Deaf-specific checks
 │   ├── integrations/     # MBTQ ecosystem connections
 │   └── models/           # Data models
-├── public/               # Static assets
-└── tests/               # Test suites
+├── config/                # Multi-tenant configurations
+├── docs/                  # Documentation
+├── scripts/               # Build and setup scripts
+├── public/                # Static assets
+└── tests/                 # Test suites
 ```
 
 ### Environment Variables
 
+Copy `.env.template` to `.env.local` and configure:
+
 ```bash
 # .env.local
 NEXT_PUBLIC_API_URL=http://localhost:8000
+TENANT_CONFIG=development  # Options: default, enterprise, startup, community, development
+
+# MBTQ Ecosystem (optional)
 DEAFAUTH_API_KEY=your_deafauth_key
 FIBONROSE_ENDPOINT=https://fibonrose.api.url
 DAO_PERMISSIONS_URL=https://mbtquniverse.com/api
@@ -198,6 +283,27 @@ class MyDeafFirstValidator(BaseValidator):
 
 ## 🚢 Deployment
 
+### Automated CI/CD (GitHub Actions)
+
+This repository includes comprehensive CI/CD automation:
+
+- ✅ **Continuous Integration**: Automatic linting, testing, and building on every push
+- 🚀 **Continuous Deployment**: Auto-deploy to Vercel on merge to main
+- 🔒 **Security Scanning**: Weekly vulnerability scans and CodeQL analysis
+- 🔄 **Auto-Fix**: Automatic code formatting and dependency updates
+- 📦 **Dependabot**: Automated dependency update PRs
+
+**Setup:**
+1. Fork/clone this repository
+2. Add GitHub Secrets for Vercel deployment (see [CI/CD Guide](docs/CI-CD-GUIDE.md))
+3. Push to `main` branch to trigger automatic deployment
+
+**Required GitHub Secrets:**
+- `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (for deployment)
+- `DEAFAUTH_API_KEY`, `FIBONROSE_API_KEY`, `MAGICIAN_API_KEY` (optional, for ecosystem integration)
+
+See the complete [CI/CD Documentation](docs/CI-CD-GUIDE.md) for detailed setup and usage.
+
 ### Vercel (Recommended)
 
 ```bash
@@ -218,10 +324,26 @@ npm start
 ### Docker
 
 ```bash
-# Build and run
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build and run manually
 docker build -t accessibility-validator .
-docker run -p 3000:3000 accessibility-validator
+docker run -p 3000:3000 -p 8000:8000 accessibility-validator
+
+# Stop services
+docker-compose down
 ```
+
+### Multi-Tenant Deployment
+
+The application supports multiple deployment configurations (see `config/multi-tenant.yml`):
+- **Enterprise**: Full features for large organizations
+- **Startup**: Lightweight for small teams
+- **Community**: Free tier with basic features
+- **Development**: Full access for testing
+
+Set `TENANT_CONFIG` environment variable to select configuration.
 
 ## 🤝 Contributing
 
