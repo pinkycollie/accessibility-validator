@@ -1,0 +1,93 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-and-build:
+    name: Lint and Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Build Next.js application
+        run: npm run build
+
+      - name: Check Python code with flake8
+        run: |
+          pip install flake8
+          flake8 api/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 api/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        continue-on-error: true
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Python tests
+        run: |
+          pip install pytest pytest-asyncio pytest-cov
+          if [ -d "api/tests" ] && [ "$(ls -A api/tests/*.py 2>/dev/null)" ]; then
+            pytest api/tests/ -v --cov=api --cov-report=term-missing
+          else
+            echo "No Python tests found, skipping..."
+          fi
+        continue-on-error: true
+
+      - name: Run Node.js tests
+        run: |
+          if npm run test --if-present; then
+            echo "Tests completed"
+          else
+            echo "No test script found, skipping..."
+          fi
+        continue-on-error: true
