@@ -73,6 +73,7 @@ Thumbs.db
 *.tmp
 *.temp
 /tmp/
+validate-events.js
 
 # Logs
 *.log

@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "allOf": [ { "$ref": "./envelope.schema.json" } ],
+  "properties": {
+    "type": { "const": "vrs.session.completed" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "durationSec": { "type": "number" },
+        "summary": { "type": "string" }
+      },
+      "required": ["sessionId"],
+      "additionalProperties": true
+    }
+  }
+}
