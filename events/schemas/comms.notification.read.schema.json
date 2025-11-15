@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "allOf": [ { "$ref": "./envelope.schema.json" } ],
+  "properties": {
+    "type": { "const": "comms.notification.read" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "notificationId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "userId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "readAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["notificationId","userId","readAt"],
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "allOf": [ { "$ref": "./envelope.schema.json" } ],
+  "properties": {
+    "type": { "const": "vrs.session.started" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "userId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "tenantId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "provider": { "type": "string" }
+      },
+      "required": ["sessionId","userId","tenantId"],
+      "additionalProperties": true
+    }
+  }
+}

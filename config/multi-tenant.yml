@@ -1,0 +1,127 @@
+# Multi-Tenant Configuration for Accessibility Validator
+# This file defines modular configurations for different tenant deployments
+
+version: "1.0"
+
+# Default configuration (base settings)
+default:
+  name: "PinkSync Accessibility Validator"
+  environment: "production"
+  features:
+    deaf_first_validation: true
+    asl_flow_check: true
+    audio_bypass_scan: true
+    visual_scoring: true
+  
+  integrations:
+    deafauth: true
+    fibonrose: true
+    magicians: true
+    dao_governance: true
+  
+  scoring:
+    visual_clarity_weight: 25
+    asl_compatibility_weight: 25
+    audio_independence_weight: 25
+    navigation_logic_weight: 25
+  
+  limits:
+    max_batch_size: 10
+    rate_limit_per_minute: 30
+    max_concurrent_validations: 5
+
+# Tenant-specific configurations
+tenants:
+  # Tenant 1: Enterprise deployment with extended features
+  enterprise:
+    name: "Enterprise Accessibility Suite"
+    extends: default
+    features:
+      advanced_reporting: true
+      custom_validators: true
+      api_analytics: true
+      webhook_notifications: true
+    limits:
+      max_batch_size: 50
+      rate_limit_per_minute: 100
+      max_concurrent_validations: 20
+    
+  # Tenant 2: Lightweight deployment for small teams
+  startup:
+    name: "Startup Accessibility Validator"
+    extends: default
+    features:
+      advanced_reporting: false
+      custom_validators: false
+    limits:
+      max_batch_size: 5
+      rate_limit_per_minute: 15
+      max_concurrent_validations: 3
+  
+  # Tenant 3: Community/Free tier
+  community:
+    name: "Community Accessibility Validator"
+    extends: default
+    features:
+      api_analytics: false
+      webhook_notifications: false
+      custom_validators: false
+    integrations:
+      deafauth: false
+      dao_governance: false
+    limits:
+      max_batch_size: 3
+      rate_limit_per_minute: 10
+      max_concurrent_validations: 1
+  
+  # Tenant 4: Development/Testing environment
+  development:
+    name: "Development Validator"
+    extends: default
+    environment: "development"
+    features:
+      debug_mode: true
+      test_mode: true
+    limits:
+      max_batch_size: 100
+      rate_limit_per_minute: 1000
+      max_concurrent_validations: 50
+
+# Module configurations for dynamic loading
+modules:
+  validators:
+    - name: "visual_clarity"
+      enabled: true
+      priority: 1
+    - name: "asl_compatibility"
+      enabled: true
+      priority: 2
+    - name: "audio_independence"
+      enabled: true
+      priority: 3
+    - name: "navigation_logic"
+      enabled: true
+      priority: 4
+  
+  integrations:
+    - name: "deafauth"
+      enabled: true
+      endpoint: "${DEAFAUTH_API_URL}"
+      timeout: 5000
+    - name: "fibonrose"
+      enabled: true
+      endpoint: "${FIBONROSE_ENDPOINT}"
+      timeout: 3000
+    - name: "magicians"
+      enabled: true
+      endpoint: "${MAGICIAN_DISPATCHER_URL}"
+      timeout: 10000
+
+# Scaling configuration
+scaling:
+  auto_scale: true
+  min_instances: 1
+  max_instances: 10
+  target_cpu_percent: 70
+  scale_up_threshold: 80
+  scale_down_threshold: 30

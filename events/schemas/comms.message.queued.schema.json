@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "allOf": [ { "$ref": "./envelope.schema.json" } ],
+  "properties": {
+    "type": { "const": "comms.message.queued" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "tenantId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "channel": { "type": "string", "enum": ["inapp","sms","email","push"] },
+        "template": { "type": "string" },
+        "to": { "type": "string" }
+      },
+      "required": ["messageId","tenantId","channel","template","to"],
+      "additionalProperties": true
+    }
+  }
+}

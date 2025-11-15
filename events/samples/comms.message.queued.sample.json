@@ -1,0 +1,7 @@
+{
+  "id": "evt_msgq_01",
+  "type": "comms.message.queued",
+  "timestamp": "2025-10-26T00:00:00Z",
+  "meta": { "tenantId": "11111111-1111-1111-1111-111111111111", "source": "service" },
+  "data": { "messageId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa", "tenantId": "11111111-1111-1111-1111-111111111111", "channel": "email", "template": "welcome", "to": "user@example.com" }
+}

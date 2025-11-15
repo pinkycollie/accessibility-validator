@@ -1,0 +1,101 @@
+name: Validate Events
+
+on:
+  pull_request:
+    paths:
+      - 'events/**'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'events/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Event Schemas
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install ajv ajv-formats
+      
+      - name: Create validation script
+        run: |
+          cat > validate-events.js << 'EOF'
+          const Ajv = require('ajv');
+          const addFormats = require('ajv-formats');
+          const fs = require('fs');
+          const path = require('path');
+
+          const ajv = new Ajv({ allErrors: true, strict: false });
+          addFormats(ajv);
+
+          // Load envelope schema
+          const envelopeSchema = JSON.parse(fs.readFileSync('events/schemas/envelope.schema.json', 'utf8'));
+          ajv.addSchema(envelopeSchema, 'envelope.schema.json');
+
+          // Load all event schemas
+          const schemasDir = 'events/schemas';
+          const schemaFiles = fs.readdirSync(schemasDir).filter(f => f.endsWith('.schema.json') && f !== 'envelope.schema.json');
+          
+          const schemas = {};
+          for (const file of schemaFiles) {
+            const schema = JSON.parse(fs.readFileSync(path.join(schemasDir, file), 'utf8'));
+            const eventType = file.replace('.schema.json', '');
+            schemas[eventType] = ajv.compile(schema);
+          }
+
+          // Validate samples
+          const samplesDir = 'events/samples';
+          const sampleFiles = fs.readdirSync(samplesDir).filter(f => f.endsWith('.sample.json'));
+          
+          let errors = 0;
+          for (const file of sampleFiles) {
+            const sample = JSON.parse(fs.readFileSync(path.join(samplesDir, file), 'utf8'));
+            const eventType = file.replace('.sample.json', '');
+            
+            if (schemas[eventType]) {
+              const valid = schemas[eventType](sample);
+              if (!valid) {
+                console.error(`❌ ${file}: Validation failed`);
+                console.error(schemas[eventType].errors);
+                errors++;
+              } else {
+                console.log(`✅ ${file}: Valid`);
+              }
+            } else {
+              console.warn(`⚠️  ${file}: No schema found`);
+            }
+          }
+
+          if (errors > 0) {
+            process.exit(1);
+          }
+          console.log(`\n✅ All ${sampleFiles.length} samples validated successfully`);
+          EOF
+      
+      - name: Validate samples against schemas
+        run: node validate-events.js
+      
+      - name: Validate catalog structure
+        run: |
+          node -e "
+            const catalog = require('./events/catalog.json');
+            if (!catalog.version) throw new Error('Missing version in catalog');
+            if (!catalog.events) throw new Error('Missing events in catalog');
+            console.log('✅ Catalog structure is valid');
+            console.log('✅ Found', Object.keys(catalog.events).length, 'events');
+          "
+

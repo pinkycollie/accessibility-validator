@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "allOf": [ { "$ref": "./envelope.schema.json" } ],
+  "properties": {
+    "type": { "const": "video.uploaded" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "tenantId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "url": { "type": "string", "minLength": 1 }
+      },
+      "required": ["videoId", "tenantId", "url"],
+      "additionalProperties": true
+    }
+  }
+}

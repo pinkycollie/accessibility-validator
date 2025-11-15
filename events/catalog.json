@@ -1,0 +1,137 @@
+{
+  "version": "2025-10-27",
+  "description": "Canonical list of events with schemas and examples used across the Deaf-first ecosystem",
+  "events": {
+    "identity.profile.updated": {
+      "description": "Profile or unified_schema changed",
+      "actor": { "userId": "uuid" },
+      "data": { "fields": ["name", "accessibilityAttributes", "linkedAccounts"] }
+    },
+    "accessibility.updated": {
+      "description": "Accessibility prefs updated",
+      "actor": { "userId": "uuid" },
+      "data": { "communicationMode": "video|text|vrs", "captionsEnabled": true }
+    },
+    "video.uploaded": {
+      "description": "A video asset is uploaded and queued for processing",
+      "actor": { "userId": "uuid" },
+      "data": { "videoId": "uuid", "tenantId": "uuid", "url": "string" }
+    },
+    "transcript.requested": {
+      "description": "Transcription job requested",
+      "data": { "videoId": "uuid", "tenantId": "uuid" }
+    },
+    "transcript.completed": {
+      "description": "Transcription finished",
+      "data": { "videoId": "uuid", "tenantId": "uuid", "transcriptId": "uuid", "summary": "string" }
+    },
+    "job.enqueued": {
+      "description": "Work item placed in queue",
+      "data": { "jobId": "uuid", "tenantId": "uuid", "jobType": "string", "priority": "low|medium|high" }
+    },
+    "job.dequeued": {
+      "description": "Worker picked up a job",
+      "data": { "jobId": "uuid", "tenantId": "uuid", "worker": "string" }
+    },
+    "job.failed": {
+      "description": "A job failed",
+      "data": { "jobId": "uuid", "tenantId": "uuid", "error": { "code": "string", "message": "string" } }
+    },
+    "payments.payment_intent.succeeded": {
+      "description": "Payment succeeded",
+      "data": { "paymentIntentId": "string", "amount": "number", "currency": "string", "tenantId": "uuid" }
+    },
+    "payments.refund.processed": {
+      "description": "Refund processed",
+      "data": { "refundId": "string", "amount": "number", "paymentIntentId": "string" }
+    },
+    "store.cart_submitted": {
+      "description": "Cart submitted",
+      "data": { "cartId": "uuid", "tenantId": "uuid", "items": [{ "sku": "string", "qty": 1 }] }
+    },
+    "store.proposal_generated": {
+      "description": "Proposal generated",
+      "data": { "proposalId": "uuid", "cartId": "uuid", "tenantId": "uuid" }
+    },
+    "store.proposal_submitted": {
+      "description": "Proposal submitted to VR",
+      "data": { "proposalId": "uuid", "tenantId": "uuid" }
+    },
+    "store.proposal_decision": {
+      "description": "VR decision recorded",
+      "data": { "proposalId": "uuid", "tenantId": "uuid", "decision": "approved|denied|revise" }
+    },
+    "store.order_created": {
+      "description": "Order created",
+      "data": { "orderId": "uuid", "proposalId": "uuid", "tenantId": "uuid" }
+    },
+    "org.user.invited": {
+      "description": "Invitation sent",
+      "data": { "orgId": "uuid", "invitedUserEmail": "string" }
+    },
+    "org.user.accepted": {
+      "description": "Invitation accepted",
+      "data": { "orgId": "uuid", "userId": "uuid" }
+    },
+    "org.member.added": {
+      "description": "Member added to org",
+      "data": { "orgId": "uuid", "userId": "uuid" }
+    },
+    "org.member.removed": {
+      "description": "Member removed from org",
+      "data": { "orgId": "uuid", "userId": "uuid" }
+    },
+    "trust.updated": {
+      "description": "Trust score or flags changed",
+      "data": { "userId": "uuid", "trustScore": "number", "flags": ["string"] }
+    },
+    "policy.violation": {
+      "description": "Policy violation detected",
+      "data": { "rule": "string", "severity": "info|warning|error", "context": {} }
+    },
+    "readiness.degraded": {
+      "description": "Health degraded",
+      "data": { "component": "string", "status": "string", "error": { "code": "string", "message": "string" } }
+    },
+    "comms.message.queued": {
+      "description": "Message queued for delivery (in-app, SMS, email, push)",
+      "data": { "messageId": "uuid", "tenantId": "uuid", "channel": "inapp|sms|email|push", "template": "string", "to": "string" }
+    },
+    "comms.message.sent": {
+      "description": "Message sent to provider",
+      "data": { "messageId": "uuid", "provider": "string", "status": "accepted|failed", "error": { "code": "string", "message": "string" } }
+    },
+    "comms.message.delivered": {
+      "description": "Provider reported delivery",
+      "data": { "messageId": "uuid", "provider": "string", "deliveredAt": "date-time" }
+    },
+    "comms.message.opened": {
+      "description": "User opened message (if trackable)",
+      "data": { "messageId": "uuid", "openedAt": "date-time" }
+    },
+    "comms.notification.read": {
+      "description": "In-app notification marked read",
+      "data": { "notificationId": "uuid", "userId": "uuid", "readAt": "date-time" }
+    },
+    "vrs.session.started": {
+      "description": "Video relay service session started",
+      "data": { "sessionId": "uuid", "userId": "uuid", "tenantId": "uuid", "provider": "string" }
+    },
+    "vrs.session.completed": {
+      "description": "VRS session completed",
+      "data": { "sessionId": "uuid", "durationSec": "number", "summary": "string" }
+    }
+  },
+  "envelope": {
+    "description": "All events are wrapped with a common envelope",
+    "required": ["id", "type", "timestamp", "data"],
+    "properties": {
+      "id": "evt_01HF...",
+      "type": "event.type.name",
+      "timestamp": "2025-10-26T00:00:00Z",
+      "actor": { "userId": "uuid" },
+      "data": {},
+      "meta": { "tenantId": "uuid", "source": "frontend|service|worker", "traceId": "string" }
+    }
+  }
+}
