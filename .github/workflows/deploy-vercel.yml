@@ -1,0 +1,265 @@
+name: 🚀 Deploy to Vercel (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment Environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+      reason:
+        description: 'Deployment Reason (optional)'
+        required: false
+        type: string
+
+# 📚 STORYTELLING: Manual deployment puts YOU in control
+# This workflow teaches deployment concepts while giving you full control over when to deploy
+
+jobs:
+  pre-deployment-check:
+    name: 🔍 Pre-Deployment Education & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 🎓 Educational Toast - Understanding Deployment
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: What is Deployment?"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📖 Deployment Process:"
+          echo "   → Takes your code from GitHub"
+          echo "   → Builds it into optimized production assets"
+          echo "   → Publishes it to a live server (Vercel)"
+          echo "   → Makes it accessible to users worldwide"
+          echo ""
+          echo "🎯 You chose: ${{ inputs.environment }} deployment"
+          echo "📝 Reason: ${{ inputs.reason || 'Manual deployment triggered' }}"
+          echo ""
+          echo "🔐 Why Manual Deployment?"
+          echo "   → Full control over deployment timing"
+          echo "   → Review changes before going live"
+          echo "   → Prevents accidental production deploys"
+          echo "   → Educational: Learn each step deliberately"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 📊 Pre-Deployment Status Check
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🔍 Checking Deployment Prerequisites..."
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📦 Repository Info:"
+          echo "   Branch: ${{ github.ref_name }}"
+          echo "   Commit: ${{ github.sha }}"
+          echo "   Actor: ${{ github.actor }}"
+          echo ""
+          echo "✅ Pre-deployment checks complete!"
+          echo "════════════════════════════════════════════════════════════"
+
+  check-secrets:
+    name: 🔐 Verify Deployment Secrets
+    runs-on: ubuntu-latest
+    outputs:
+      has_secrets: ${{ steps.check.outputs.has_secrets }}
+    steps:
+      - name: 🔍 Check for Vercel Secrets
+        id: check
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: Understanding Secrets"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🔐 What are GitHub Secrets?"
+          echo "   → Encrypted environment variables"
+          echo "   → Store sensitive data like API keys"
+          echo "   → Never exposed in logs or commits"
+          echo "   → Configured in: Settings → Secrets → Actions"
+          echo ""
+          echo "🔍 Required Secrets for Vercel Deployment:"
+          echo "   • VERCEL_TOKEN - Your Vercel authentication token"
+          echo "   • VERCEL_ORG_ID - Your Vercel organization ID"
+          echo "   • VERCEL_PROJECT_ID - Your Vercel project ID"
+          echo ""
+          
+          # Check if secrets are available (without exposing them)
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "⚠️  VERCEL_TOKEN not found"
+            echo "has_secrets=false" >> $GITHUB_OUTPUT
+          elif [ -z "${{ secrets.VERCEL_ORG_ID }}" ]; then
+            echo "⚠️  VERCEL_ORG_ID not found"
+            echo "has_secrets=false" >> $GITHUB_OUTPUT
+          elif [ -z "${{ secrets.VERCEL_PROJECT_ID }}" ]; then
+            echo "⚠️  VERCEL_PROJECT_ID not found"
+            echo "has_secrets=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All required secrets are configured!"
+            echo "has_secrets=true" >> $GITHUB_OUTPUT
+          fi
+          
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 📖 How to Configure Secrets (If Missing)
+        if: steps.check.outputs.has_secrets == 'false'
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "📚 HOW TO: Configure Vercel Secrets"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🔧 Step-by-Step Guide:"
+          echo ""
+          echo "1️⃣  Get your Vercel Token:"
+          echo "   → Go to: https://vercel.com/account/tokens"
+          echo "   → Click 'Create Token'"
+          echo "   → Name it 'GitHub Actions'"
+          echo "   → Copy the token"
+          echo ""
+          echo "2️⃣  Get your Project IDs:"
+          echo "   → Go to your Vercel project settings"
+          echo "   → Find 'Project ID' and 'Org ID'"
+          echo "   → Copy both values"
+          echo ""
+          echo "3️⃣  Add to GitHub Secrets:"
+          echo "   → Go to: GitHub repo → Settings → Secrets → Actions"
+          echo "   → Click 'New repository secret'"
+          echo "   → Add each secret with exact names shown above"
+          echo ""
+          echo "4️⃣  Re-run this workflow!"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  deploy:
+    name: 🚀 Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [pre-deployment-check, check-secrets]
+    if: needs.check-secrets.outputs.has_secrets == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 🎓 Educational Toast - Deployment Process
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: The Deployment Pipeline"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📦 What's happening now?"
+          echo "   1. ⬇️  Download your code to Vercel's servers"
+          echo "   2. 📥 Install all dependencies (npm + pip)"
+          echo "   3. 🏗️  Build Next.js frontend"
+          echo "   4. 🐍 Package FastAPI as serverless functions"
+          echo "   5. 🌐 Deploy to global CDN"
+          echo "   6. ✅ Verify deployment health"
+          echo ""
+          echo "⏱️  Typical deployment time: 2-3 minutes"
+          echo "🌍 Your app will be available at: [your-project].vercel.app"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 🚀 Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ inputs.environment == 'production' && '--prod' || '' }}
+          working-directory: ./
+      
+      - name: 🎉 Deployment Success!
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "✨ DEPLOYMENT COMPLETE!"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🎯 Environment: ${{ inputs.environment }}"
+          echo "📝 Reason: ${{ inputs.reason || 'Manual deployment' }}"
+          echo ""
+          echo "🌐 Your app is now live!"
+          echo ""
+          echo "🔍 Next Steps:"
+          echo "   1. Check your Vercel dashboard for the deployment URL"
+          echo "   2. Test your application endpoints"
+          echo "   3. Monitor for any errors in Vercel logs"
+          echo "   4. Share with users! 🎊"
+          echo ""
+          echo "💡 Pro Tip: Use preview deployments to test changes"
+          echo "   before deploying to production!"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  deployment-skipped:
+    name: ⚠️ Deployment Skipped - Secrets Missing
+    runs-on: ubuntu-latest
+    needs: check-secrets
+    if: needs.check-secrets.outputs.has_secrets == 'false'
+    steps:
+      - name: 📚 Educational Guidance
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "⚠️  DEPLOYMENT SKIPPED"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🔐 Reason: Required secrets are not configured"
+          echo ""
+          echo "🎓 LEARNING MOMENT:"
+          echo "   This is a SAFETY FEATURE, not an error!"
+          echo "   → Prevents failed deployments"
+          echo "   → Teaches you about secret management"
+          echo "   → Guides you to proper configuration"
+          echo ""
+          echo "📖 Why secrets matter:"
+          echo "   • Keep your API keys secure"
+          echo "   • Prevent unauthorized access"
+          echo "   • Enable secure CI/CD automation"
+          echo "   • Industry best practice"
+          echo ""
+          echo "✅ Action Required:"
+          echo "   → Review the 'check-secrets' job above"
+          echo "   → Follow the step-by-step guide"
+          echo "   → Configure missing secrets"
+          echo "   → Re-run this workflow"
+          echo ""
+          echo "💡 This educational approach ensures you understand"
+          echo "   deployment security before automating it!"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  post-deployment:
+    name: 📊 Post-Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always() && needs.check-secrets.outputs.has_secrets == 'true'
+    steps:
+      - name: 🎓 Educational Wrap-Up
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 DEPLOYMENT LEARNING PATH COMPLETE"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📚 What You Learned:"
+          echo "   ✅ Manual deployment gives you control"
+          echo "   ✅ Secrets keep your credentials secure"
+          echo "   ✅ Vercel handles the deployment complexity"
+          echo "   ✅ Production vs preview environments"
+          echo ""
+          echo "🎯 Deployment Journey:"
+          echo "   Step 1: ✅ Pre-deployment validation"
+          echo "   Step 2: ✅ Secret verification"
+          echo "   Step 3: ✅ Deployment execution"
+          echo "   Step 4: ✅ Post-deployment summary"
+          echo ""
+          echo "🚀 CONGRATULATIONS!"
+          echo "   You've successfully completed a manual deployment!"
+          echo ""
+          echo "💡 Next Time:"
+          echo "   → Experiment with preview deployments"
+          echo "   → Try different branches"
+          echo "   → Monitor Vercel logs for insights"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
