@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+# Security: Explicit permissions for GITHUB_TOKEN (principle of least privilege)
+permissions:
+  contents: read
+
 # 📚 STORYTELLING: This workflow teaches CI fundamentals through automated quality checks
 # Each step represents a learning opportunity about code quality and testing
 
@@ -13,6 +17,8 @@ jobs:
   educational-setup:
     name: 📖 Step 1 - Understanding Your Environment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: 🎯 Learning Checkpoint - Repository Checkout
         uses: actions/checkout@v4
@@ -39,6 +45,8 @@ jobs:
     name: 🔍 Step 2 - Code Quality Checks
     runs-on: ubuntu-latest
     needs: educational-setup
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -112,6 +120,8 @@ jobs:
     name: 🐍 Step 3 - Python API Validation
     runs-on: ubuntu-latest
     needs: educational-setup
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -170,6 +180,8 @@ jobs:
     name: 🏗️ Step 4 - Build Validation (Educational)
     runs-on: ubuntu-latest
     needs: [lint-and-validate, python-validation]
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -224,6 +236,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint-and-validate, python-validation, build-check]
     if: always()
+    permissions: {}
     steps:
       - name: 🎉 Educational Summary
         run: |

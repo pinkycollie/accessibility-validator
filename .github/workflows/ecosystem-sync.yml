@@ -21,6 +21,9 @@ on:
         type: boolean
         default: false
 
+# Security: Explicit permissions for GITHUB_TOKEN (principle of least privilege)
+permissions: {}
+
 # 📚 STORYTELLING: Learn how microservices communicate in the MBTQ ecosystem
 # This workflow demonstrates distributed system integration patterns
 
@@ -28,6 +31,7 @@ jobs:
   ecosystem-introduction:
     name: 🎓 Understanding the MBTQ Ecosystem
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: 🌐 Educational Introduction
         run: |
@@ -75,6 +79,7 @@ jobs:
   check-ecosystem-secrets:
     name: 🔐 Ecosystem Integration Check
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       has_deafauth: ${{ steps.check.outputs.has_deafauth }}
       has_fibonrose: ${{ steps.check.outputs.has_fibonrose }}
@@ -168,6 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-ecosystem-secrets
     if: needs.check-ecosystem-secrets.outputs.has_deafauth == 'true' && (inputs.sync_target == 'all' || inputs.sync_target == 'deafauth' || github.event_name == 'push')
+    permissions: {}
     steps:
       - name: 🎓 Understanding DeafAUTH Integration
         run: |
@@ -211,6 +217,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-ecosystem-secrets
     if: needs.check-ecosystem-secrets.outputs.has_fibonrose == 'true' && (inputs.sync_target == 'all' || inputs.sync_target == 'fibonrose' || github.event_name == 'push')
+    permissions: {}
     steps:
       - name: 🎓 Understanding Fibonrose Integration
         run: |
@@ -255,6 +262,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-ecosystem-secrets
     if: needs.check-ecosystem-secrets.outputs.has_magicians == 'true' && (inputs.sync_target == 'all' || inputs.sync_target == 'magicians' || github.event_name == 'push')
+    permissions: {}
     steps:
       - name: 🎓 Understanding 360Magicians Integration
         run: |
@@ -300,6 +308,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-ecosystem-secrets, sync-deafauth, sync-fibonrose, sync-magicians]
     if: always()
+    permissions: {}
     steps:
       - name: 🎓 Educational Wrap-Up
         run: |

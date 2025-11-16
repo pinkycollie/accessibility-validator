@@ -16,6 +16,10 @@ on:
         type: boolean
         default: false
 
+# Security: Explicit permissions for GITHUB_TOKEN (principle of least privilege)
+permissions:
+  contents: read
+
 # 📚 STORYTELLING: Learn about security while protecting your code
 # This workflow teaches security best practices through automated scanning
 
@@ -23,6 +27,7 @@ jobs:
   security-education:
     name: 🎓 Understanding Security in CI/CD
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: 📖 Educational Introduction
         run: |
@@ -55,6 +60,8 @@ jobs:
   npm-security:
     name: 🔍 Node.js Dependency Security
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -122,6 +129,8 @@ jobs:
   python-security:
     name: 🐍 Python Dependency Security
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -189,6 +198,8 @@ jobs:
     name: 🔬 Code Security Analysis
     runs-on: ubuntu-latest
     if: github.event.inputs.deep_scan == 'true' || github.event_name == 'schedule'
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       
@@ -229,6 +240,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [npm-security, python-security]
     if: always()
+    permissions: {}
     steps:
       - name: 🎓 Educational Wrap-Up
         run: |
