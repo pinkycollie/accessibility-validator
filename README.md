@@ -56,25 +56,200 @@ FastAPI server runs on <http://127.0.0.1:8000>
 - **Audio-Bypass Detector**: Identify audio-only elements needing visual alternatives
 - **Deaf-First Scoring**: Custom algorithms beyond standard WCAG
 
-## 🔧 API Endpoints
+## 🤖 CI/CD Workflows (Educational & Lightweight)
 
-### Core Validation
+This repository features **educational CI/CD workflows** that teach you about continuous integration and deployment while keeping operations lightweight and transparent.
 
-- `POST /api/py/validate` - Validate a URL or HTML content
-- `GET /api/py/report/{validation_id}` - Get validation results
-- `POST /api/py/batch-validate` - Validate multiple URLs
+📖 **[Complete Workflow Usage Guide →](docs/WORKFLOW_GUIDE.md)**
 
-### Deaf-First Specific
+### 🎓 Workflow Philosophy
 
-- `POST /api/py/asl-flow-check` - Analyze ASL navigation compatibility
-- `POST /api/py/audio-bypass-scan` - Detect audio-only elements
-- `GET /api/py/deaf-score/{url}` - Get Deaf-first accessibility score
+- **Storytelling Approach**: Each workflow step includes educational "toast notifications" explaining what's happening and why
+- **Manual Control**: Deployment is manual via `workflow_dispatch` - YOU decide when to deploy
+- **Lightweight Operations**: Focus on validation, skip heavy builds in CI
+- **Transparency**: Clear feedback about missing secrets or skipped steps
+- **Learning-First**: Designed to teach CI/CD concepts through practical examples
 
-### MBTQ Integration
+### 📋 Available Workflows
 
-- `POST /api/py/deafauth-validate` - Validate DeafAUTH flow compatibility
-- `POST /api/py/fibonrose-report` - Send scores to Fibonrose trust system
-- `GET /api/py/ecosystem-status` - Check integration health
+#### 1. 🎓 CI - Continuous Integration (Educational Path)
+
+**File**: `.github/workflows/ci.yml`  
+**Triggers**: Push to main/develop, Pull Requests  
+
+**What it does**:
+- ✅ Repository checkout with educational explanations
+- ✅ Node.js and Python environment setup
+- ✅ Dependency installation (npm ci, pip)
+- ✅ Code linting with ESLint
+- ✅ Python syntax validation
+- ✅ Build validation (lightweight mode)
+
+**Educational Features**:
+- Toast notifications explaining each step
+- Learning checkpoints at every stage
+- Tips on fixing common issues
+- No failures, only guidance
+
+**Run locally**:
+```bash
+npm ci
+npm run lint
+python -m py_compile api/index.py
+```
+
+#### 2. 🚀 Deploy to Vercel (Manual)
+
+**File**: `.github/workflows/deploy-vercel.yml`  
+**Trigger**: Manual via `workflow_dispatch`
+
+**How to deploy**:
+1. Go to **Actions** tab in GitHub
+2. Select **"Deploy to Vercel (Manual)"**
+3. Click **"Run workflow"**
+4. Choose environment (production/preview)
+5. Optionally add a deployment reason
+
+**What it does**:
+- 🔍 Pre-deployment validation
+- 🔐 Verifies Vercel secrets are configured
+- 🚀 Deploys to Vercel (if secrets present)
+- 📊 Provides educational feedback throughout
+
+**Required Secrets** (Optional):
+- `VERCEL_TOKEN` - Your Vercel authentication token
+- `VERCEL_ORG_ID` - Your Vercel organization ID
+- `VERCEL_PROJECT_ID` - Your Vercel project ID
+
+**Without secrets**: Workflow runs successfully, provides setup instructions, skips deployment gracefully.
+
+#### 3. 🔒 Security Checks (Educational)
+
+**File**: `.github/workflows/security.yml`  
+**Triggers**: Push, Pull Request, Weekly Schedule (Mondays 2 AM UTC), Manual
+
+**What it does**:
+- 🔍 NPM security audit (moderate+ severity)
+- 🐍 Python package vulnerability scan
+- 🔬 Optional deep code analysis
+- 📊 Educational security summary
+
+**Run locally**:
+```bash
+npm audit --audit-level=moderate
+pip install pip-audit && pip-audit -r requirements.txt
+```
+
+#### 4. 🌐 MBTQ Ecosystem Sync (Educational)
+
+**File**: `.github/workflows/ecosystem-sync.yml`  
+**Triggers**: Push to main, Manual via `workflow_dispatch`
+
+**What it does**:
+- 🔐 Checks for ecosystem integration secrets
+- 🔗 Syncs with DeafAUTH (if configured)
+- 📊 Updates Fibonrose registry (if configured)
+- 🤖 Notifies 360Magicians (if configured)
+- 📚 Educational content about distributed systems
+
+**Optional Secrets** (for ecosystem integration):
+- `DEAFAUTH_API_KEY` & `DEAFAUTH_WEBHOOK_URL`
+- `FIBONROSE_API_KEY` & `FIBONROSE_ENDPOINT`
+- `MAGICIAN_API_KEY` & `MAGICIAN_DISPATCHER_URL`
+
+**Without secrets**: Workflow provides educational content about each service, continues successfully.
+
+### 💡 CI/CD Best Practices in This Repo
+
+1. **Educational First**: Learn by doing, with explanations at every step
+2. **Fail Gracefully**: Missing secrets don't cause failures, they provide guidance
+3. **Manual Control**: You control when code goes live
+4. **Lightweight CI**: Fast feedback, skip heavy operations
+5. **Transparent**: Clear visibility into what's happening and why
+
+## 🔧 Developer Magician API
+
+The Developer Magician API extends the FastAPI backend with storytelling workflows and educational endpoints.
+
+**API Documentation**: <http://localhost:8000/api/py/docs> (when running locally)
+
+### Storytelling Workflow Endpoints
+
+These endpoints provide narrative structures for understanding CI/CD concepts:
+
+- `GET /api/py/workflows/ci-cd-story` - Complete CI/CD workflow as educational journey
+- `GET /api/py/workflows/security-story` - Security learning pathway
+- `GET /api/py/workflows/deployment-story` - Manual deployment mastery guide
+
+**Example Response** (`/api/py/workflows/ci-cd-story`):
+```json
+{
+  "workflow_name": "CI/CD Learning Journey",
+  "description": "An educational pathway through continuous integration and deployment",
+  "stages": [
+    {
+      "stage": "checkout",
+      "status": "success",
+      "description": "Repository checkout - Getting your code ready",
+      "educational_content": {
+        "title": "🎯 Stage 1: Repository Checkout",
+        "message": "This is where the magic begins!...",
+        "learning_points": [...],
+        "tips": [...],
+        "resources": [...]
+      }
+    }
+  ],
+  "current_stage": "deploy",
+  "overall_progress": 75
+}
+```
+
+### Educational Pathway Endpoints
+
+Learn CI/CD concepts through interactive documentation:
+
+- `GET /api/py/learn/ci-cd-basics` - Fundamentals of continuous integration/deployment
+- `GET /api/py/learn/workflow-stages/{stage}` - Deep dive into specific stages
+- `GET /api/py/learn/mbtq-ecosystem` - Understanding the MBTQ ecosystem
+
+**Example Usage**:
+```bash
+# Learn CI/CD basics
+curl http://localhost:8000/api/py/learn/ci-cd-basics
+
+# Deep dive into deployment stage
+curl http://localhost:8000/api/py/learn/workflow-stages/deploy
+
+# Understand MBTQ ecosystem
+curl http://localhost:8000/api/py/learn/mbtq-ecosystem
+```
+
+### Toast Notification Endpoint
+
+Generate educational feedback for workflow stages:
+
+- `POST /api/py/toast/workflow-feedback` - Create educational toast messages
+
+**Parameters**:
+- `stage` - The workflow stage (checkout, lint, test, build, deploy, etc.)
+- `status` - Status (pending, in_progress, success, failed, skipped)
+- `custom_message` - Optional custom message
+
+**Example**:
+```bash
+curl -X POST "http://localhost:8000/api/py/toast/workflow-feedback?stage=deploy&status=success"
+```
+
+### Core API Endpoints
+
+- `GET /api/py/health` - Health check with feature list
+- `GET /api/py/ecosystem-status` - MBTQ ecosystem integration status
+- `GET /api/py` - Root endpoint with API navigation
+
+### Legacy Endpoints (Backward Compatible)
+
+- `GET /api/py/helloFastApi` - Original hello endpoint
 
 ## 📊 Validation Criteria
 
