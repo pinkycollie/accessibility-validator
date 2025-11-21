@@ -163,8 +163,8 @@ SUPABASE_KEY=your_supabase_key
 
 ## Deployment
 
-### Vercel
-The backend is configured to run on Vercel as Python serverless functions.
+### docker
+The backend is configured to run on docker as Python serverless functions.
 
 ### Local Development
 ```bash
