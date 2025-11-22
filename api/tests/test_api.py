@@ -1,8 +1,10 @@
 """
 Basic tests for the accessibility validator API
 """
+
 import pytest
 from fastapi.testclient import TestClient
+
 from api.index import app
 
 client = TestClient(app)
