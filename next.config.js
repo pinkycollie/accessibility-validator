@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
+  reactStrictMode: true,
+  output: 'export',
+  // Configure basePath and assetPrefix for GitHub Pages
+  basePath: isProd ? '/accessibility-validator' : '',
+  assetPrefix: isProd ? '/accessibility-validator/' : '',
+  images: {
+    unoptimized: true, // Required for static export
+  },
   rewrites: async () => {
     return [
       {
