@@ -1,11 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from "next/link";
 
+interface ApiResponse {
+  [key: string]: unknown;
+}
+
 export default function Home() {
-  const [apiResponse, setApiResponse] = useState<any>(null);
-  const [workflowStory, setWorkflowStory] = useState<any>(null);
+  const [apiResponse, setApiResponse] = useState<ApiResponse | null>(null);
+  const [workflowStory, setWorkflowStory] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchApiDemo = async () => {
@@ -15,7 +19,7 @@ export default function Home() {
       const data = await response.json();
       setApiResponse(data);
     } catch (error) {
-      setApiResponse({ error: 'API not running - start with: npm run fastapi-dev' });
+      setApiResponse({ error: 'API service unavailable' });
     }
     setLoading(false);
   };
@@ -27,7 +31,7 @@ export default function Home() {
       const data = await response.json();
       setWorkflowStory(data);
     } catch (error) {
-      setWorkflowStory({ error: 'API not running - start with: npm run fastapi-dev' });
+      setWorkflowStory({ error: 'API service unavailable' });
     }
     setLoading(false);
   };
@@ -116,7 +120,7 @@ export default function Home() {
                   </div>
                   
                   <div className="grid gap-3">
-                    {workflowStory.stages?.slice(0, 3).map((stage: any, idx: number) => (
+                    {workflowStory.stages?.slice(0, 3).map((stage: ApiResponse, idx: number) => (
                       <div key={idx} className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border-l-4 border-blue-500">
                         <div className="flex items-center justify-between mb-2">
                           <h5 className="font-semibold text-gray-900 dark:text-white">{stage.educational_content?.title}</h5>
