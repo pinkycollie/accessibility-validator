@@ -1,4 +1,4 @@
-# PinkSync Accessibility Validator
+# PinkSync Accessibility Project Management 
 
 **Part of the MBTQ Ecosystem - Deaf-First Accessibility Automation**
 
