@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "PinkSync Accessibility Validator",
-  description: "Deaf-First Accessibility Automation - Part of the MBTQ Ecosystem",
+  title: "Developer Magician - Next-Gen AI Developer Agent",
+  description: "Autonomous AI-powered developer agent for workflow automation and intelligent task orchestration. Part of the 360 Magicians ecosystem.",
 };
 
 export default function RootLayout({
