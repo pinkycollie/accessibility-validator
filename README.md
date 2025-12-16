@@ -15,6 +15,7 @@ This backend is designed to solve the "scattered projects" problem. Instead of m
 - **Shared Integrations**: Reusable Google AI, Supabase, and other integrations
 - **Flexible Deployment**: Works on Vercel, Cloud Run, Docker, or traditional servers
 - **Technology Agnostic**: Support FastAPI, Django, automation scripts, and more
+The Accessibility Validator is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual ui and sign language navigation patterns.
 
 ## 🎯 Purpose in MBTQ Ecosystem
 
@@ -325,3 +326,4 @@ MIT License - Feel free to use for your projects
 -----
 
 **Built for scalability, designed for flexibility** 🚀
+**Built with ❤️ for the Deaf community by MBTQ**

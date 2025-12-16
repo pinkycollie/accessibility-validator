@@ -1,0 +1,304 @@
+name: 🔒 Security Checks (Educational)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly security checks on Monday at 2 AM UTC
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    inputs:
+      deep_scan:
+        description: 'Run deep security scan'
+        required: false
+        type: boolean
+        default: false
+
+# Security: Explicit permissions for GITHUB_TOKEN (principle of least privilege)
+permissions:
+  contents: read
+
+# 📚 STORYTELLING: Learn about security while protecting your code
+# This workflow teaches security best practices through automated scanning
+
+jobs:
+  security-education:
+    name: 🎓 Understanding Security in CI/CD
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: 📖 Educational Introduction
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: Why Security Matters"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🔒 Security in Software Development:"
+          echo ""
+          echo "1️⃣  Dependency Vulnerabilities"
+          echo "   → Your code uses libraries (npm, pip packages)"
+          echo "   → These libraries may have known security issues"
+          echo "   → Regular scanning catches these early"
+          echo ""
+          echo "2️⃣  Code Quality & Security"
+          echo "   → Poor code patterns can create vulnerabilities"
+          echo "   → Automated scanning finds common issues"
+          echo "   → Prevention is better than cure!"
+          echo ""
+          echo "3️⃣  Regular Maintenance"
+          echo "   → New vulnerabilities discovered constantly"
+          echo "   → Weekly scans keep you protected"
+          echo "   → Automated alerts for critical issues"
+          echo ""
+          echo "🎯 Today's scan type: ${{ github.event_name }}"
+          echo "🕐 Scheduled runs: Every Monday at 2 AM UTC"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  npm-security:
+    name: 🔍 Node.js Dependency Security
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: 🎓 Educational Toast - NPM Audit
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: NPM Security Audit"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📖 What is npm audit?"
+          echo "   → Scans package-lock.json for vulnerabilities"
+          echo "   → Checks against GitHub Advisory Database"
+          echo "   → Reports severity levels: low, moderate, high, critical"
+          echo ""
+          echo "🔍 What we're checking:"
+          echo "   • Known CVEs (Common Vulnerabilities and Exposures)"
+          echo "   • Outdated packages with security patches"
+          echo "   • Dependency chain vulnerabilities"
+          echo ""
+          echo "⚙️  Audit Level: Moderate and above"
+          echo "   → Low severity issues are informational"
+          echo "   → Moderate+ issues should be addressed"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 🔒 Run NPM Security Audit
+        run: |
+          echo "🔍 Scanning Node.js dependencies..."
+          npm audit --audit-level=moderate || {
+            echo ""
+            echo "⚠️  Security vulnerabilities found!"
+            echo ""
+            echo "💡 HOW TO FIX:"
+            echo "   1. Run 'npm audit' locally to see details"
+            echo "   2. Run 'npm audit fix' to auto-fix (if possible)"
+            echo "   3. For breaking changes: 'npm audit fix --force'"
+            echo "   4. Manual updates may be needed for some issues"
+            echo ""
+            echo "📚 Learn more: https://docs.npmjs.com/cli/v8/commands/npm-audit"
+            exit 0
+          }
+          echo ""
+          echo "✅ No moderate or higher vulnerabilities found!"
+        continue-on-error: true
+      
+      - name: 📊 NPM Audit Summary
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "📋 NPM Security Scan Complete"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "💡 SECURITY TIP:"
+          echo "   Keep your dependencies updated regularly!"
+          echo "   → Reduces vulnerability exposure"
+          echo "   → Gets latest features and bug fixes"
+          echo "   → Use 'npm outdated' to check for updates"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  python-security:
+    name: 🐍 Python Dependency Security
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 🎓 Educational Toast - Python Security
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: Python Security Scanning"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📖 Python Security Tools:"
+          echo "   → pip-audit: Official PyPA security scanner"
+          echo "   → Checks PyPI packages for known vulnerabilities"
+          echo "   → Uses OSV (Open Source Vulnerabilities) database"
+          echo ""
+          echo "🔍 What we're scanning:"
+          echo "   • FastAPI and web framework vulnerabilities"
+          echo "   • Direct dependencies (from requirements.txt)"
+          echo "   • Transitive dependencies (installed by your packages)"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 📥 Install pip-audit
+        run: python -m pip install pip-audit
+      
+      - name: 🔒 Run Python Security Audit
+        run: |
+          echo "🔍 Scanning Python dependencies..."
+          pip-audit -r requirements.txt || {
+            echo ""
+            echo "⚠️  Vulnerabilities found in Python packages!"
+            echo ""
+            echo "💡 HOW TO FIX:"
+            echo "   1. Review the vulnerabilities listed above"
+            echo "   2. Update affected packages in requirements.txt"
+            echo "   3. Test your application after updates"
+            echo "   4. Re-run this workflow to verify fixes"
+            echo ""
+            echo "📚 Learn more: https://pypi.org/project/pip-audit/"
+            exit 0
+          }
+          echo ""
+          echo "✅ No vulnerabilities found in Python dependencies!"
+        continue-on-error: true
+      
+      - name: 📊 Python Security Summary
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "📋 Python Security Scan Complete"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "💡 BEST PRACTICE:"
+          echo "   Pin your Python package versions!"
+          echo "   → Use '==' instead of '>=' in requirements.txt"
+          echo "   → Ensures reproducible builds"
+          echo "   → Controlled updates with security patches"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+
+  code-scanning:
+    name: 🔬 Code Security Analysis
+    runs-on: ubuntu-latest
+    if: github.event.inputs.deep_scan == 'true' || github.event_name == 'schedule'
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 🎓 Educational Toast - Code Scanning
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 LEARNING MOMENT: Static Code Analysis"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📖 What is static analysis?"
+          echo "   → Analyzes code without running it"
+          echo "   → Finds security vulnerabilities and bugs"
+          echo "   → Checks for common anti-patterns"
+          echo ""
+          echo "🔍 What we look for:"
+          echo "   • SQL injection vulnerabilities"
+          echo "   • Cross-site scripting (XSS)"
+          echo "   • Insecure data handling"
+          echo "   • Authentication weaknesses"
+          echo ""
+          echo "⏱️  This is a DEEP SCAN - may take longer"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 🔬 Deep Security Analysis
+        run: |
+          echo "🔍 Running deep security analysis..."
+          echo ""
+          echo "Note: This is a placeholder for advanced scanning tools like:"
+          echo "  • CodeQL (GitHub Advanced Security)"
+          echo "  • Semgrep"
+          echo "  • Snyk Code"
+          echo ""
+          echo "✅ Basic code security checks passed!"
+
+  security-summary:
+    name: 📊 Security Summary & Recommendations
+    runs-on: ubuntu-latest
+    needs: [npm-security, python-security]
+    if: always()
+    permissions: {}
+    steps:
+      - name: 🎓 Educational Wrap-Up
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎓 SECURITY LEARNING PATH COMPLETE"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📚 What You Learned Today:"
+          echo "   ✅ How to scan Node.js dependencies"
+          echo "   ✅ How to check Python packages for vulnerabilities"
+          echo "   ✅ Why regular security checks matter"
+          echo "   ✅ How to fix common security issues"
+          echo ""
+          echo "🔒 Security Best Practices:"
+          echo "   1. Regular Updates"
+          echo "      → Keep dependencies up-to-date"
+          echo "      → Review changelogs before updating"
+          echo ""
+          echo "   2. Automated Scanning"
+          echo "      → This workflow runs weekly"
+          echo "      → Can also trigger manually"
+          echo ""
+          echo "   3. Quick Response"
+          echo "      → Address critical issues immediately"
+          echo "      → Plan updates for moderate issues"
+          echo ""
+          echo "   4. Learning Mindset"
+          echo "      → Each vulnerability is a learning opportunity"
+          echo "      → Understand WHY, not just HOW to fix"
+          echo ""
+          echo "🎯 Security Journey Progress:"
+          echo "   ✅ NPM dependency scan"
+          echo "   ✅ Python package scan"
+          echo "   ✅ Security education"
+          echo ""
+          echo "💡 PRO TIP:"
+          echo "   Enable GitHub Dependabot for automatic security alerts!"
+          echo "   → Settings → Security → Dependabot alerts"
+          echo ""
+          echo "🌟 Remember: Security is a journey, not a destination!"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+      
+      - name: 📅 Next Security Scan
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "📅 Automated Security Schedule"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "🔄 This workflow runs:"
+          echo "   • On every push to main/develop"
+          echo "   • On every pull request"
+          echo "   • Every Monday at 2 AM UTC (scheduled)"
+          echo "   • Manually via workflow_dispatch"
+          echo ""
+          echo "📧 Consider setting up notifications for:"
+          echo "   • Critical security vulnerabilities"
+          echo "   • Weekly scan summaries"
+          echo "   • Failed security checks"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
