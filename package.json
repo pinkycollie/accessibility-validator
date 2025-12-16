@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-fastapi",
+  "name": "accessibility-validator",
   "version": "0.2.0",
   "private": true,
   "scripts": {
@@ -7,6 +7,7 @@
     "next-dev": "next dev",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
     "build": "next build",
+    "build-export": "next build",
     "start": "next start",
     "lint": "next lint"
   },

@@ -380,6 +380,37 @@ class MyDeafFirstValidator(BaseValidator):
 vercel --prod
 ```
 
+### GitHub Pages
+
+This project is configured to deploy to GitHub Pages automatically via GitHub Actions.
+
+#### Automatic Deployment
+
+When you push to the `main` branch, the GitHub Actions workflow will automatically:
+1. Build the Next.js application as a static site
+2. Export the static files to the `out/` directory
+3. Deploy to GitHub Pages
+
+**Live URL**: `https://pinkycollie.github.io/accessibility-validator/`
+
+#### Manual Deployment
+
+To deploy manually:
+
+```bash
+# Install dependencies
+npm install
+
+# Build and export the static site
+npm run build-export
+
+# The static files will be in the 'out/' directory
+```
+
+The workflow file is located at `.github/workflows/deploy-github-pages.yml`.
+
+**Note**: The site uses `output: 'export'` in `next.config.js` for static site generation. This means dynamic routes and API routes won't work in the GitHub Pages deployment. For full functionality including FastAPI backend, use Vercel or a manual server deployment.
+
 ### Manual Server
 
 ```bash
