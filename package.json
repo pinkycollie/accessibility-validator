@@ -1,6 +1,6 @@
 {
-  "name": "accessibility-validator",
-  "version": "0.2.0",
+  "name": "developer-magician",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn api.index:app --reload",
