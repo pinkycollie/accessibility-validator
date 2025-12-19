@@ -1,5 +1,5 @@
 import pytest
-from fileguard import validate_upload, detect_file_type
+from fileguard import validate_upload, detect_file_type, InvalidFileError, InvalidConfigError
 
 # PNG magic bytes - full PNG header
 PNG_HEADER = (
@@ -25,6 +25,11 @@ class TestDetectFileType:
         result = detect_file_type(EXE_HEADER)
         assert "application" in result  # application/x-dosexec or similar
 
+    def test_rejects_empty_file(self):
+        """Test that empty files raise InvalidFileError"""
+        with pytest.raises(InvalidFileError, match="Cannot detect type of empty file"):
+            detect_file_type(b"")
+
 class TestValidateUpload:
     def test_allows_valid_image(self):
         result = validate_upload(PNG_HEADER)
@@ -48,8 +53,18 @@ class TestValidateUpload:
             context="document-upload"
         )
         # Should reject PNG when only PDF allowed
-        assert "pdf" not in result.detected_type.lower() or result.allowed is False
+        assert result.allowed is False
 
     def test_context_in_reason(self):
         result = validate_upload(EXE_HEADER, context="test-context")
         assert "test-context" in result.reason
+
+    def test_rejects_empty_file_validation(self):
+        """Test that empty files raise InvalidFileError during validation"""
+        with pytest.raises(InvalidFileError, match="Cannot validate empty file"):
+            validate_upload(b"")
+
+    def test_rejects_empty_allowlist(self):
+        """Test that empty allowlist raises InvalidConfigError"""
+        with pytest.raises(InvalidConfigError, match="Allowlist cannot be empty"):
+            validate_upload(PNG_HEADER, allowlist=set())

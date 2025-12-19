@@ -34,15 +34,22 @@ Detect the real MIME type from file content using pylibmagic.
 **Returns:**
 - str: The detected MIME type (e.g., "image/png", "application/pdf")
 
+**Raises:**
+- `InvalidFileError`: If the file content cannot be analyzed or is empty
+- `FileGuardError`: If the magic library is not properly configured
+
 **Example:**
 ```python
-from fileguard import detect_file_type
+from fileguard import detect_file_type, InvalidFileError
 
-with open("upload.bin", "rb") as f:
-    content = f.read()
+try:
+    with open("upload.bin", "rb") as f:
+        content = f.read()
     
-mime_type = detect_file_type(content)
-print(f"Detected type: {mime_type}")
+    mime_type = detect_file_type(content)
+    print(f"Detected type: {mime_type}")
+except InvalidFileError as e:
+    print(f"Cannot analyze file: {e}")
 ```
 
 #### `validate_upload(blob: bytes, allowlist: set[str] | None = None, context: str = "upload") -> FileTypeResult`
@@ -57,6 +64,11 @@ Validate file type against an approved allowlist.
 **Returns:**
 - `FileTypeResult`: Named tuple with validation results
 
+**Raises:**
+- `InvalidFileError`: If the file content cannot be analyzed or is empty
+- `InvalidConfigError`: If the allowlist is empty (when explicitly provided)
+- `FileGuardError`: If the magic library is not properly configured
+
 **FileTypeResult Fields:**
 - `allowed` (bool): Whether the file type is permitted
 - `detected_type` (str): The MIME type detected by pylibmagic
@@ -65,19 +77,24 @@ Validate file type against an approved allowlist.
 
 **Example:**
 ```python
-from fileguard import validate_upload
+from fileguard import validate_upload, InvalidFileError, InvalidConfigError
 
-result = validate_upload(
-    file_bytes,
-    allowlist={"image/png", "image/jpeg"},
-    context="avatar-upload"
-)
+try:
+    result = validate_upload(
+        file_bytes,
+        allowlist={"image/png", "image/jpeg"},
+        context="avatar-upload"
+    )
 
-if not result.allowed:
-    log_security_event("file_rejected", result)
-    raise UploadRejected(result.reason)
+    if not result.allowed:
+        log_security_event("file_rejected", result)
+        raise UploadRejected(result.reason)
 
-# Process the file...
+    # Process the file...
+except InvalidFileError as e:
+    return {"error": f"Invalid file: {e}"}
+except InvalidConfigError as e:
+    return {"error": f"Configuration error: {e}"}
 ```
 
 ### Default Allowlist
