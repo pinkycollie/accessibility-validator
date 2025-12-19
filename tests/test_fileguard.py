@@ -1,14 +1,20 @@
 import pytest
 from fileguard import validate_upload, detect_file_type
 
-# PNG magic bytes
-PNG_HEADER = b'\x89PNG\r\n\x1a\n' + b'\x00' * 100
+# PNG magic bytes - full PNG header
+PNG_HEADER = (
+    b'\x89PNG\r\n\x1a\n'  # PNG signature
+    b'\x00\x00\x00\rIHDR'  # IHDR chunk
+    b'\x00\x00\x00\x10'  # width
+    b'\x00\x00\x00\x10'  # height
+    b'\x08\x02\x00\x00\x00' + b'\x00' * 100  # bit depth, color type, etc
+)
 
 # EXE magic bytes (MZ header)
-EXE_HEADER = b'MZ' + b'\x00' * 100
+EXE_HEADER = b'MZ' + b'\x90\x00' + b'\x03' + b'\x00' * 100
 
 # JPEG magic bytes
-JPEG_HEADER = b'\xff\xd8\xff\xe0' + b'\x00' * 100
+JPEG_HEADER = b'\xff\xd8\xff\xe0' + b'\x00\x10JFIF' + b'\x00' * 100
 
 class TestDetectFileType:
     def test_detects_png(self):
