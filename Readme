@@ -1,8 +1,8 @@
-# Pinksync Starter
+# Developer-Magician
 
 **Deaf-first. AI-powered. Future-ready.**
 
-This is a hybrid **Next.js 14 + FastAPI** starter built for real-time, entrepreneurial, and rehabilitation workflows. Created by [Pinky Collie](https://mbtquniverse.com), this stack is built to support:
+This is a hybrid **Next.js 14 + FastAPI** starter built for real-time, entrepreneurial, and rehabilitation workflows. Part of the PinkSync ecosystem created by [Pinky Collie](https://mbtquniverse.com), this stack is built to support:
 
 - Deaf-first API integration
 - Vocational Rehabilitation (VR4Deaf)
@@ -48,8 +48,8 @@ This is a hybrid **Next.js 14 + FastAPI** starter built for real-time, entrepren
 Clone and run locally:
 
 ```bash
-npx create-next-app pinksync --example "https://github.com/digitros/nextjs-fastapi"
-cd pinksync
+git clone https://github.com/pinkycollie/Developer-Magician.git
+cd Developer-Magician
 
 # Set up Python backend
 python3 -m venv venv

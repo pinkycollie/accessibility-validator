@@ -1,8 +1,16 @@
-# PinkSync Accessibility Project Management 
+# Developer-Magician - PinkSync Accessibility Project Management
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/pinkycollie/Developer-Magician)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python)](https://www.python.org/)
+[![Deploy with Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/new/clone?repository-url=https://github.com/pinkycollie/Developer-Magician)
 
 **Part of the MBTQ Ecosystem - Deaf-First Accessibility Automation**
 
-The Accessibility Validator is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual ui and sign language navigation patterns.
+The Developer-Magician is a core service within PinkSync that ensures all interfaces prioritize ASL flow and bypass audio-only UX. This service validates websites and applications for Deaf-first accessibility, going beyond standard WCAG compliance to focus on visual UI and sign language navigation patterns.
 
 ## 🎯 Purpose in MBTQ Ecosystem
 
@@ -16,14 +24,14 @@ The Accessibility Validator is a core service within PinkSync that ensures all i
 
 ### One-Click Vercel Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/pinkycollie/accessibility-validator)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/pinkycollie/Developer-Magician)
 
 ### Manual Setup
 
 ```bash
 # Clone and setup
-git clone https://github.com/pinkycollie/accessibility-validator.git
-cd accessibility-validator
+git clone https://github.com/pinkycollie/Developer-Magician.git
+cd Developer-Magician
 
 # Create virtual environment
 python3 -m venv venv
@@ -316,7 +324,7 @@ const aiValidation = await fetch('/api/py/ai-validate', {
 ### Project Structure
 
 ```
-accessibility-validator/
+Developer-Magician/
 ├── app/                    # Next.js frontend
 │   ├── components/         # UI components
 │   ├── validation/         # Validation dashboard
@@ -391,7 +399,7 @@ When you push to the `main` branch, the GitHub Actions workflow will automatical
 2. Export the static files to the `out/` directory
 3. Deploy to GitHub Pages
 
-**Live URL**: `https://pinkycollie.github.io/accessibility-validator/`
+**Live URL**: `https://pinkycollie.github.io/Developer-Magician/`
 
 #### Manual Deployment
 
@@ -425,8 +433,8 @@ npm start
 
 ```bash
 # Build and run
-docker build -t accessibility-validator .
-docker run -p 3000:3000 accessibility-validator
+docker build -t developer-magician .
+docker run -p 3000:3000 developer-magician
 ```
 
 ## 🤝 Contributing
