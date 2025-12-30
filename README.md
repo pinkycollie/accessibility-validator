@@ -438,7 +438,7 @@ docker run -p 3000:3000 developer-magician
 
 ## 🤝 Contributing
 
-This service is part of the MBTQ ecosystem and follows Deaf-first development principles:
+This service is part of the 360 Magicians and follows Deaf-first development principles:
 
 1. **Visual-First Development**: All UI changes must prioritize visual communication
 1. **ASL Logic**: Consider sign language navigation patterns
@@ -447,7 +447,7 @@ This service is part of the MBTQ ecosystem and follows Deaf-first development pr
 
 ## 📄 License
 
-MIT License - Part of the MBTQ Universe ecosystem
+MIT License - 360 Magicians
 
 ## 🔗 MBTQ Ecosystem Links
 
