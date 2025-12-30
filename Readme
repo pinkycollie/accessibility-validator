@@ -1,103 +1,17 @@
-# Developer-Magician
+# Developer‑Magician  
+### AI‑Native Accessibility Engine for Deaf‑First, ASL‑Centric UX
 
-**Deaf-first. AI-powered. Future-ready.**
+Developer‑Magician is a next‑generation developer tool that validates interfaces for true Deaf‑first accessibility.  
+Not just WCAG. Not just checklists.  
+This is accessibility built for sign‑language‑native users.
 
-This is a hybrid **Next.js 14 + FastAPI** starter built for real-time, entrepreneurial, and rehabilitation workflows. Part of the PinkSync ecosystem created by [Pinky Collie](https://mbtquniverse.com), this stack is built to support:
+Developer‑Magician analyzes interfaces through an event‑driven, schema‑validated pipeline to ensure:
 
-- Deaf-first API integration
-- Vocational Rehabilitation (VR4Deaf)
-- Job & Business development pipelines
-- AI automation with scalable backend support
+- ASL‑centric interaction flow  
+- visual‑first navigation patterns  
+- zero audio‑only traps  
+- sign‑language‑native UX  
+- accessible authentication and onboarding  
+- context‑aware accessibility scoring  
 
----
-
-## How It Works
-
-- **Frontend:** Next.js 14 (App Router)
-- **Backend:** FastAPI (served under `/api/py`)
-- **Vercel Production:** FastAPI runs as Python serverless functions alongside your React app.
-- **Local Development:** FastAPI runs on `127.0.0.1:8000`, proxied via `next.config.js` rewrites.
-
----
-
-## Folder Structure
-
-/
-├── app/                  # Next.js App Router
-├── api/                  # FastAPI backend (Python)
-│   ├── deaf.py           # Deaf-first endpoints
-│   ├── job.py            # Job readiness APIs
-│   ├── business.py       # Business startup APIs
-│   ├── vr4deaf.py        # Vocational Rehab for Deaf
-├── models/               # Pydantic schemas
-├── services/             # Business logic modules
-├── auth/                 # Authentication + token mgmt
-├── utils/                # Helper functions/utilities
-├── database/             # Database connection + queries
-├── routers/              # FastAPI route includes
-├── public/               # Static assets (Next.js)
-├── main.py               # FastAPI entry point
-├── next.config.js        # Rewrite rules for dev/prod
-├── requirements.txt      # Python dependencies
-├── package.json          # Node.js dependencies
-
----
-
-## Getting Started
-
-Clone and run locally:
-
-```bash
-git clone https://github.com/pinkycollie/Developer-Magician.git
-cd Developer-Magician
-
-# Set up Python backend
-python3 -m venv venv
-source venv/bin/activate
-
-# Install frontend and backend dependencies
-npm install
-pip install -r requirements.txt
-
-# Run dev servers
-npm run dev
-
-	•	Open http://localhost:3000 for your app.
-	•	FastAPI runs on http://127.0.0.1:8000.
-
-⸻
-
-Deployment on Vercel
-
-Just connect your repo and Vercel will auto-detect the Next.js frontend and Python API functions in /api. No extra configuration needed.
-
-⸻
-
-Why Pinksync?
-
-This isn’t just a boilerplate. It’s a movement:
-	•	Empower the Deaf community
-	•	Automate with intention
-	•	Streamline network development
-	•	Build inclusive, scalable systems from Day 1
-
-⸻
-
-Roadmap
-	•	Integrate authentication (JWT)
-	•	Deploy PostgreSQL on Neon.tech
-	•	Add more endpoints
-	•	Sync with PinkSync AI agent
-	•	Real-time API
-
-⸻
-
-Learn More
-	•	Next.js Documentation
-	•	FastAPI Docs
-	•	Vercel for App
-	•	Pinky Collie
-
-⸻
-
-License
+It is part of the **360 Magicians** ecosystem inside PinkSync — a suite of AI‑native developer agents designed to modernize how software is built, validated, and deployed.
