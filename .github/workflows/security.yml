@@ -1,3 +1,4 @@
+name: Security Scanning
 name: 🔒 Security Checks (Educational)
 
 on:
@@ -6,6 +7,66 @@ on:
   pull_request:
     branches: [main, develop]
   schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-security:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=moderate || true
+        continue-on-error: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Python security check
+        run: |
+          pip install safety
+          safety check -r requirements.txt --continue-on-error || true
+        continue-on-error: true
+
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, python
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
     # Run weekly security checks on Monday at 2 AM UTC
     - cron: '0 2 * * 1'
   workflow_dispatch:

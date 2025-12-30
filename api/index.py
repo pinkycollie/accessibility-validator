@@ -145,8 +145,10 @@ class StorytellingWorkflow(BaseModel):
 # ORIGINAL ENDPOINTS - Keeping backward compatibility
 # ============================================================================
 
+
 @app.get("/api/py/helloFastApi")
 def hello_fast_api():
+    return {"message": "Hello from FastAPI"}
     """Original hello endpoint - kept for backward compatibility"""
     return {"message": "Hello from FastAPI"}
 
