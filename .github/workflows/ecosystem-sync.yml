@@ -1,9 +1,79 @@
+name: MBTQ Ecosystem Integration
 name: 🌐 MBTQ Ecosystem Sync (Educational)
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ecosystem-sync:
+    name: Sync with MBTQ Ecosystem
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get deployment info
+        id: deploy-info
+        run: |
+          echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "repo=${{ github.repository }}" >> $GITHUB_OUTPUT
+          echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+
+      - name: Notify DeafAUTH
+        if: ${{ secrets.DEAFAUTH_WEBHOOK_URL != '' }}
+        run: |
+          curl -X POST "${{ secrets.DEAFAUTH_WEBHOOK_URL }}" \
+            -H "Authorization: Bearer ${{ secrets.DEAFAUTH_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "event": "accessibility-validator-deployed",
+              "repo": "${{ steps.deploy-info.outputs.repo }}",
+              "commit": "${{ steps.deploy-info.outputs.commit_sha }}",
+              "branch": "${{ steps.deploy-info.outputs.branch }}"
+            }' || echo "DeafAUTH notification skipped"
+        continue-on-error: true
+
+      - name: Update Fibonrose Registry
+        if: ${{ secrets.FIBONROSE_ENDPOINT != '' }}
+        run: |
+          curl -X POST "${{ secrets.FIBONROSE_ENDPOINT }}/register" \
+            -H "Authorization: Bearer ${{ secrets.FIBONROSE_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "service": "accessibility-validator",
+              "version": "${{ steps.deploy-info.outputs.branch }}",
+              "status": "deployed",
+              "commit": "${{ steps.deploy-info.outputs.commit_sha }}"
+            }' || echo "Fibonrose notification skipped"
+        continue-on-error: true
+
+      - name: Dispatch to 360Magicians
+        if: ${{ secrets.MAGICIAN_DISPATCHER_URL != '' }}
+        run: |
+          curl -X POST "${{ secrets.MAGICIAN_DISPATCHER_URL }}/validate" \
+            -H "Authorization: Bearer ${{ secrets.MAGICIAN_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "target": "accessibility-validator",
+              "action": "post-deploy-validation",
+              "commit": "${{ steps.deploy-info.outputs.commit_sha }}"
+            }' || echo "360Magicians notification skipped"
+        continue-on-error: true
+
+      - name: Log ecosystem sync status
+        if: always()
+        run: |
+          echo "Ecosystem synchronization completed"
+          echo "Commit: ${{ steps.deploy-info.outputs.commit_sha }}"
+          echo "Repository: ${{ steps.deploy-info.outputs.repo }}"
     inputs:
       sync_target:
         description: 'Ecosystem Component to Sync'

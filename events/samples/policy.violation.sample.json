@@ -1,0 +1,6 @@
+{
+  "id": "evt_01HH0000000000000000000000",
+  "type": "policy.violation",
+  "timestamp": "2025-10-26T00:00:00Z",
+  "data": { "rule": "rls_disabled_in_public", "severity": "error", "context": { "table": "public.users" } }
+}
