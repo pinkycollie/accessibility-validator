@@ -6,6 +6,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python)](https://www.python.org/)
+[![Auto-fix Code Issues](https://github.com/pinkycollie/Developer-Magician/actions/workflows/auto-fix.yml/badge.svg)](https://github.com/pinkycollie/Developer-Magician/actions/workflows/auto-fix.yml)
 
 **Part of the MBTQ Ecosystem - Deaf-First Accessibility Automation**
 
